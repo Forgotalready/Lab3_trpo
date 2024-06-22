@@ -13,9 +13,15 @@ public:
 };
 
 class FolderTraversal : public ITraversal{
-    void traversal(QDir&, QMap<QString, long long>);
+    void traversal(QDir&, QMap<QString, long long>*);
 public:
     QMap<QString, long long>* execute(QString &path) override;
+};
+
+class TypeTraversal : public ITraversal{
+    void traversal(QDir&, QMap<QString, long long>*);
+public:
+    QMap<QString, long long> *execute(QString& path) override;
 };
 
 #endif // ITRAVERSAL_H
