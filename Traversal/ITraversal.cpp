@@ -51,3 +51,22 @@ QMap<QString, long long> *TypeTraversal::execute(QString &path)
 
     return map;
 }
+
+QMap<QString, double>* countPrecent(QMap<QString, long long> &stat, double border)
+{
+    QMap<QString, double> *newMap = new QMap<QString, double>();
+
+    double sum = 0.0;
+    foreach(long long x, stat)
+        sum += (double) x;
+
+    foreach(QString str, stat.keys()){
+        double precent = ((double) stat[str]) / sum * 100.0;
+        if(precent < border){
+            if((*newMap).count("Other") != 0) (*newMap)["Other"] += precent;
+            else (*newMap)["Other"] = precent;
+        }else
+            (*newMap)[str] = precent;
+    }
+    return newMap;
+}

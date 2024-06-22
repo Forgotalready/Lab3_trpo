@@ -4,6 +4,8 @@
 #include <QMap>
 #include <QDir>
 
+QMap<QString, double> *countPrecent(QMap<QString, long long>&, double);
+
 class ITraversal
 {
 public:
