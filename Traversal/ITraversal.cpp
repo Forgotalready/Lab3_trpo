@@ -60,6 +60,11 @@ QMap<QString, double>* countPrecent(QMap<QString, long long> &stat, double borde
     foreach(long long x, stat)
         sum += (double) x;
 
+    const double eps = 1e-5;
+    if(sum < eps)
+        return newMap;
+
+
     foreach(QString str, stat.keys()){
         double precent = ((double) stat[str]) / sum * 100.0;
         if(precent < border){

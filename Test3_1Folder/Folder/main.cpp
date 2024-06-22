@@ -9,8 +9,7 @@
 
 void getStatistic(Context& context){
     QVector<ITraversal*> vec = {new FolderTraversal(), new TypeTraversal()};
-    QString path = QDir::currentPath();
-    //QString path = "D:/project/Lab3_trpo/TestFolder2_1";
+    QString path = "D:/project/Lab3_trpo/TestFolder2";
 
     for(ITraversal* strat : vec){
         context.setStrategy(strat);
