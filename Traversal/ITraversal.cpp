@@ -5,15 +5,19 @@ void FolderTraversal::traversal(QDir &directory, QMap<QString, long long> *stati
 {
     QString path = directory.absolutePath();
 
-    (*statistic)[path] = 0;
-
     foreach(QFileInfo file, directory.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)){
         if(file.isDir()){
             QDir folder(file.absoluteFilePath());
             traversal(folder, statistic);
             continue;
         }
-        (*statistic)[path] += ((long long) file.size());
+
+        long long fileSize = ((long long) file.size());
+
+        if((*statistic).count(path) != 0)
+            (*statistic)[path] += fileSize;
+        else
+            (*statistic)[path] = fileSize;
     }
 }
 
@@ -55,15 +59,11 @@ QMap<QString, long long> *TypeTraversal::execute(QString &path)
 QMap<QString, double>* countPrecent(QMap<QString, long long> &stat, double border)
 {
     QMap<QString, double> *newMap = new QMap<QString, double>();
+    if(stat.count() == 0) return newMap;
 
     double sum = 0.0;
     foreach(long long x, stat)
         sum += (double) x;
-
-    const double eps = 1e-5;
-    if(sum < eps)
-        return newMap;
-
 
     foreach(QString str, stat.keys()){
         double precent = ((double) stat[str]) / sum * 100.0;
