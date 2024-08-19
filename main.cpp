@@ -8,25 +8,24 @@
 #include "Context.h"
 
 void getStatistic(Context& context){
-    QVector<ITraversal*> vec = {new FolderTraversal(), new TypeTraversal()};
+    ITraversal* strat = new FolderTraversal();
+
+    context.setStrategy(strat);
+
     //QString path = QDir::currentPath();
-    QString path = "D:/project/Lab3_trpo/Test1Folder";
+    QString path = "D:/project/Lab3_trpo/Test2Folder";
 
-    for(ITraversal* strat : vec){
-        context.setStrategy(strat);
+    QMap<QString, long long> statistic = context.executeStrategy(path);
 
-        QMap<QString, long long> statistic = *(context.executeStrategy(path));
+    QMap<QString, double> map = countPrecent(statistic, 1.0); // Правильнее использовать всё по значению, конечно не будет копирования, компилятор не дурак.
+    QTextStream cout(stdout);
 
-        QMap<QString, double> map = *(countPrecent(statistic, 1.0));
+    foreach(const QString& key, map.keys())
+        cout << key << " " << map[key] << Qt::endl;
 
-        QTextStream cout(stdout);
+    cout.flush();
 
-        foreach(auto x, map.keys()){
-            cout << x << " " << map[x] << Qt::endl;
-            cout.flush();
-        }
-        cout << Qt::endl;
-    }
+    delete strat;
 }
 
 int main(int argc, char *argv[])

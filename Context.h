@@ -10,7 +10,7 @@ class Context
 public:
     Context();
     void setStrategy(ITraversal*);
-    QMap<QString, long long>* executeStrategy(QString& path);
+    QMap<QString, long long> executeStrategy(QString& path);
 };
 
 #endif // CONTEXT_H
