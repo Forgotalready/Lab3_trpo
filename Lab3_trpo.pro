@@ -9,11 +9,15 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Context.cpp \
+    Traversal/ITraversal.cpp \
     main.cpp \
-    MainWindow.cpp
+    View/MainWindow.cpp
 
 HEADERS += \
-    MainWindow.h
+    Context.h \
+    View/MainWindow.h \
+    Traversal/ITraversal.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
