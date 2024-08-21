@@ -1,0 +1,59 @@
+* {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #333333;
+}
+
+QTableView {
+    border: 1px solid #cccccc;
+    gridline-color: #dddddd;
+    background-color: #f5f5f5;
+    alternate-background-color: #ffffff;
+    selection-background-color: #87cefa;
+    selection-color: #ffffff;
+}
+
+QTableView::item {
+    padding: 5px;
+}
+
+QTableView::item:selected {
+    background-color: #87cefa;
+    color: #ffffff;
+}
+
+QHeaderView::section {
+    background-color: #87cefa;
+    color: #ffffff;
+    padding: 4px;
+    border: 1px solid #cccccc;
+}
+
+QTreeView {
+    border: 1px solid #cccccc;
+    background-color: #f5f5f5;
+    alternate-background-color: #ffffff;
+    selection-background-color: #87cefa;
+    selection-color: #ffffff;
+}
+
+QTreeView::item {
+    padding: 5px;
+}
+
+QTreeView::item:selected {
+    background-color: #87cefa;
+    color: #ffffff;
+}
+
+QHeaderView::section {
+    background-color: #87cefa;
+    color: #ffffff;
+    padding: 4px;
+    border: 1px solid #cccccc;
+}
+
+QTreeView::branch:selected {
+    background-color: #87cefa;
+    color: #ffffff;
+}
