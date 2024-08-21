@@ -6,12 +6,14 @@
 #include <QTableView>
 #include <QSplitter>
 #include <QFileSystemModel>
-#include <QAbstractTableModel>
 #include <QDir>
 #include <QHeaderView>
 #include <QStatusBar>
+#include <QComboBox>
+#include <QVBoxLayout>
 
 #include "Context.h"
+#include "Model/StatisticModel.h"
 
 class MainWindow : public QMainWindow
 {
@@ -21,8 +23,13 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 private:
-    void setupFileSystemModel();
+    void setupFileSystemModel(QString& homePath);
+private slots:
+    void onSelectionChange(const QItemSelection& selected, const QItemSelection& deselected);
+    void onStrategyChange(int index);
 private:
+    QString currentPath;
+
     // View
     QTreeView* treeView;
     QTableView* tableView;
@@ -30,10 +37,14 @@ private:
     QSplitter* viewSplitter;
     // Model
     QFileSystemModel* fileSystemModel;
-    QAbstractTableModel* statisticModel;
+    StatisticModel* statisticModel;
     // ComboBox
-
+    QComboBox* strategyComboBox;
     // Calculation Contex
-    Context contex;
+    Context context;
+    ITraversal* strategy;
+signals:
+    void pathChange(QMap<QString, double>&);
+
 };
 #endif // MAINWINDOW_H

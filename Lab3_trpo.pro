@@ -10,12 +10,14 @@ CONFIG += c++17
 
 SOURCES += \
     Context.cpp \
+    Model/StatisticModel.cpp \
     Traversal/ITraversal.cpp \
     main.cpp \
     View/MainWindow.cpp
 
 HEADERS += \
     Context.h \
+    Model/StatisticModel.h \
     View/MainWindow.h \
     Traversal/ITraversal.h
 
