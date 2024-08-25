@@ -16,6 +16,7 @@
 #include "Context.h"
 #include "Model/StatisticModel.h"
 #include "View/ChartCreator.h"
+#include "View/ViewAdapter.h"
 
 class MainWindow : public QMainWindow
 {
@@ -26,27 +27,31 @@ public:
     ~MainWindow();
 private:
     void createNavigation();
-    void createStatistic();
+    QWidget* createStatistic();
     void createStatusBar();
     void createStrategeBox();
     QMap<QString, double> calculateStatistic();
+    void createViewBox();
 private:
     QString currentPath;
 
     QTreeView* navigationView;
     QFileSystemModel* navigationModel;
 
-    QTableView* statisticView;
+    ViewAdapter* statisticView;
     StatisticModel* statisticModel;
     Context context;
     ITraversal* stratege;
 
     QComboBox* strategeBox;
+    QComboBox* viewBox;
 
     QHBoxLayout* viewLayout;
+
 private slots:
     void onSelectionChange(const QItemSelection& selected, const QItemSelection& deselected);
     void onStrategyChange(int index);
+    void onViewChange(int index);
 signals:
     void pathChange(QMap<QString, double>&);
 

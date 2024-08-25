@@ -7,17 +7,22 @@ MainWindow::MainWindow(QWidget *parent)
     QWidget* mainWindowWidget = new QWidget(this);
 
     createNavigation();
-    createStatistic();
+    QWidget* statistic = createStatistic();
     createStrategeBox();
+    createViewBox();
 
-    QVBoxLayout* vLayout = new QVBoxLayout(this);
+    QVBoxLayout* vLayout = new QVBoxLayout(mainWindowWidget);
 
-    viewLayout = new QHBoxLayout(this);
+    viewLayout = new QHBoxLayout(mainWindowWidget);
 
     viewLayout->addWidget(navigationView);
-    viewLayout->addWidget(statisticView);
+    viewLayout->addWidget(statistic);
 
-    vLayout->addWidget(strategeBox);
+    QHBoxLayout* comboBoxLayout = new QHBoxLayout(mainWindowWidget);
+    comboBoxLayout->addWidget(strategeBox);
+    comboBoxLayout->addWidget(viewBox);
+
+    vLayout->addLayout(comboBoxLayout);
     vLayout->addLayout(viewLayout);
 
     mainWindowWidget->setLayout(vLayout);
@@ -46,6 +51,11 @@ MainWindow::~MainWindow() {
     if(stratege != nullptr){
         delete stratege;
         stratege = nullptr;
+    }
+    if(statisticView != nullptr)
+    {
+        delete statisticView;
+        statisticView = nullptr;
     }
 }
 
@@ -83,22 +93,38 @@ QMap<QString, double> MainWindow::calculateStatistic()
     return data;
 }
 
+void MainWindow::createViewBox()
+{
+    viewBox = new QComboBox(this);
+    viewBox->addItems(
+        {"Table", "Pie Chart", "Bar Chart"}
+    );
+
+    connect(
+        viewBox,
+        QOverload<int>::of(&QComboBox::currentIndexChanged),
+        this,
+        &MainWindow::onViewChange
+    );
+}
+
 void MainWindow::createStatusBar()
 {
     this->setStatusBar(new QStatusBar(this));
     this->statusBar()->showMessage("Выбраный путь: " + currentPath);
 }
 
-void MainWindow::createStatistic()
+QWidget* MainWindow::createStatistic()
 {
-    statisticView = new QTableView(this);
+    statisticView = new TableView();
     stratege = new FolderTraversal();
     context.setStrategy(stratege);
 
     QMap<QString, double> data = calculateStatistic();
 
     statisticModel = new StatisticModel(data, this);
-    statisticView->setModel(statisticModel);
+
+    QWidget* statistic = statisticView->updateView(statisticModel);
 
     connect(
         this,
@@ -106,6 +132,7 @@ void MainWindow::createStatistic()
         statisticModel,
         &StatisticModel::onPathChange
     );
+    return statistic;
 }
 
 void MainWindow::onSelectionChange(const QItemSelection &selected, const QItemSelection &deselected)
@@ -118,6 +145,8 @@ void MainWindow::onSelectionChange(const QItemSelection &selected, const QItemSe
     QMap<QString, double> data = calculateStatistic();
 
     emit pathChange(data);
+
+    viewLayout->addWidget(statisticView->updateView(statisticModel));
 }
 
 void MainWindow::onStrategyChange(int index)
@@ -138,4 +167,29 @@ void MainWindow::onStrategyChange(int index)
     context.setStrategy(stratege);
     QMap<QString, double> data = calculateStatistic();
     emit pathChange(data);
+
+    viewLayout->addWidget(statisticView->updateView(statisticModel));
+}
+
+void MainWindow::onViewChange(int index)
+{
+    if(statisticView != nullptr)
+    {
+        delete statisticView;
+        statisticView = nullptr;
+    }
+
+    switch(index)
+    {
+        case 0:
+            statisticView = new TableView();
+            break;
+        case 1:
+            statisticView = new PieChart();
+            break;
+        case 2:
+            statisticView = new BarChart();
+            break;
+    }
+    viewLayout->addWidget(statisticView->updateView(statisticModel));
 }
