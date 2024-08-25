@@ -1,15 +1,28 @@
 #include "ChartCreator.h"
 
-ChartCreator::ChartCreator()
+AbstractChartCreator::AbstractChartCreator()
 {
     chartView = nullptr;
 }
 
-QChartView *ChartCreator::createPieChart(QString &title, StatisticModel *model)
+QChartView *AbstractChartCreator::createChartView(QString &title, StatisticModel *model)
 {
     QChart* chart = new QChart();
     chart->setTitle(title);
 
+    addSeries(chart, model);
+
+    chart->legend()->show();
+    chartView = new QChartView(chart);
+    return chartView;
+}
+
+
+PieChartCreator::PieChartCreator()
+    : AbstractChartCreator(){}
+
+void PieChartCreator::addSeries(QChart *chart, StatisticModel *model)
+{
     QPieSeries* pieSeries = new QPieSeries();
     for(int i = 0;i < model->rowCount(QModelIndex());i++)
     {
@@ -21,21 +34,17 @@ QChartView *ChartCreator::createPieChart(QString &title, StatisticModel *model)
 
     foreach(QPieSlice* slice, pieSeries->slices())
     {
-        slice->setLabel(slice->label() + " " + QString::number(slice->percentage(), 'f', 2));
+        slice->setLabel(slice->label() + " " + QString::number(100 * slice->percentage(), 'f', 2));
     }
-
-    chart->legend()->show();
-
     chart->addSeries(pieSeries);
-
-    chartView = new QChartView(chart);
-    return chartView;
 }
 
-QChartView *ChartCreator::createBarChart(QString &title, StatisticModel *model)
+
+BarChartCreator::BarChartCreator()
+    : AbstractChartCreator(){}
+
+void BarChartCreator::addSeries(QChart *chart, StatisticModel *model)
 {
-    QChart* chart = new QChart();
-    chart->setTitle(title);
 
     QBarSeries* barSeries = new QBarSeries();
     QList<QBarSet*> listSet;
@@ -53,8 +62,4 @@ QChartView *ChartCreator::createBarChart(QString &title, StatisticModel *model)
     barSeries->append(listSet);
     chart->addSeries(barSeries);
     chart->createDefaultAxes();
-
-    chart->legend()->show();
-    chartView = new QChartView(chart);
-    return chartView;
 }

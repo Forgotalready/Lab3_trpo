@@ -10,15 +10,37 @@
 
 using namespace QtCharts;
 
-class ChartCreator
+class AbstractChartCreator
 {
 public:
-    ChartCreator();
-
-    QChartView* createPieChart(QString& title, StatisticModel* model);
-    QChartView* createBarChart(QString& title, StatisticModel* model);
+    AbstractChartCreator();
+    virtual ~AbstractChartCreator(){}
+    QChartView* createChartView(QString& title, StatisticModel* model);
+protected:
+    virtual void addSeries(QChart* chart, StatisticModel* model) = 0;
 private:
     QChartView* chartView;
+};
+
+class PieChartCreator : public AbstractChartCreator
+{
+public:
+    PieChartCreator();
+    ~PieChartCreator(){}
+    // AbstractChartCreator interface
+protected:
+    void addSeries(QChart *chart, StatisticModel *model) override;
+};
+
+class BarChartCreator : public AbstractChartCreator
+{
+public:
+    BarChartCreator();
+    ~BarChartCreator(){}
+
+    // AbstractChartCreator interface
+protected:
+    void addSeries(QChart *chart, StatisticModel *model) override;
 };
 
 #endif // CHARTCREATOR_H
