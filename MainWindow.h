@@ -15,6 +15,7 @@
 #include "Traversal/ITraversal.h"
 #include "Context.h"
 #include "Model/StatisticModel.h"
+#include "View/ChartCreator.h"
 
 class MainWindow : public QMainWindow
 {

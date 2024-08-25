@@ -12,9 +12,15 @@ MainWindow::MainWindow(QWidget *parent)
 
     QVBoxLayout* vLayout = new QVBoxLayout(this);
 
+    ChartCreator chartCreator;
+    QString title = "Bar Chart";
+    QWidget* chart = chartCreator.createBarChart(title, statisticModel);
+    chart->setParent(this);
+
     QHBoxLayout* horLayout = new QHBoxLayout(this);
+
     horLayout->addWidget(navigationView);
-    horLayout->addWidget(statisticView);
+    horLayout->addWidget(chart);
 
     vLayout->addWidget(strategeBox);
     vLayout->addLayout(horLayout);
@@ -90,15 +96,14 @@ void MainWindow::createStatusBar()
 
 void MainWindow::createStatistic()
 {
-    statisticView = new QTableView(this);
-
+    //statisticView = new QTableView(this);
     stratege = new FolderTraversal();
     context.setStrategy(stratege);
 
     QMap<QString, double> data = calculateStatistic();
 
     statisticModel = new StatisticModel(data, this);
-    statisticView->setModel(statisticModel);
+    //statisticView->setModel(statisticModel);
 
     connect(
         this,

@@ -12,6 +12,7 @@ SOURCES += \
     Context.cpp \
     Model/StatisticModel.cpp \
     Traversal/ITraversal.cpp \
+    View/ChartCreator.cpp \
     main.cpp \
     MainWindow.cpp
 
@@ -19,7 +20,8 @@ HEADERS += \
     Context.h \
     MainWindow.h \
     Model/StatisticModel.h \
-    Traversal/ITraversal.h
+    Traversal/ITraversal.h \
+    View/ChartCreator.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
